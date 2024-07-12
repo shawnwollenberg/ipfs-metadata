@@ -107,3 +107,29 @@ GET /metadata
 
 ## Contact
 For any questions or suggestions, please open an issue or contact the repository owner.
+
+
+## Standalone Dev Deployment
+The following are instructions to build the image and run it locally, we assume your .env is up to date  with your postgres credentials. Note, if you are using a docker container to run postgresql you should use (POSTGRES_HOST=host.docker.internal) in your .env
+
+##### Build the docker image:
+
+```
+docker build -t nft-ipfs-app .
+```
+
+##### Run the docker image:
+
+```
+docker run -p 8080:8080 nft-ipfs-app
+```
+
+## App and DB   Deployment with docker compose
+The following are instructions to get going quickly for a local dev env which includes a running instance of postgres:
+
+( Note this assumes docker compose is installed on your machine:https://docs.docker.com/compose/install/ )
+##### Build and start app + db:
+
+```
+docker compose up -d --build 
+```
