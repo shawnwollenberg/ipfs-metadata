@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
 
 jobs:
   build-and-push:
@@ -56,11 +59,6 @@ jobs:
 
     - name: Terraform Init
       run: make init
-    
-    - name: check where terraform.tfvars is stored
-      run: |
-        ls -la
-        cd infrastructure
 
     - name: Terraform Plan
       env:
@@ -73,6 +71,15 @@ jobs:
       env:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         IMAGE_TOKEN: ${{ secrets.IMAGE_TOKEN }}
+      if: github.ref == 'refs/heads/main'
       run: terraform apply -var "DB_PASSWORD=${DB_PASSWORD}" -var "IMAGE_TOKEN=${IMAGE_TOKEN}" -var-file="terraform.tfvars" -auto-approve
+      working-directory: ./infrastructure
+
+    - name: Terraform Destroy
+      env:
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        IMAGE_TOKEN: ${{ secrets.IMAGE_TOKEN }}
+      if: github.event_name == 'pull_request'
+      run: terraform destroy -var "DB_PASSWORD=${DB_PASSWORD}" -var "IMAGE_TOKEN=${IMAGE_TOKEN}" -var-file="terraform.tfvars" -auto-approve
       working-directory: ./infrastructure
 
