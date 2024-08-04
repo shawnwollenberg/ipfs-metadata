@@ -56,6 +56,9 @@ jobs:
 
     - name: Terraform Init
       run: make init
+    
+    - name: check where terraform.tfvars is stored
+      run: ls -la
 
     - name: Terraform Plan
       env:
