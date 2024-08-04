@@ -28,34 +28,43 @@ ipfs_listener_port     = 80
 ipfs_listener_protocol = "HTTP"
 
 # IAM Configuration
-ecs_assume_role_policy = "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Principal\":{\"Service\":\"ecs-tasks.amazonaws.com\"},\"Effect\":\"Allow\",\"Sid\":\"\"}]}"
+ecs_assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": ["ecs-tasks.amazonaws.com", "secretsmanager.amazonaws.com"]
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
 ecs_role_policy_arn    = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 
 # ECS Configuration
-cluster_name = "ipfs-cluster"
-task_family  = "ipfs-task"
-container_definitions = [{
-  name      = "ipfs-app"
-  image     = "ghcr.io/adedokunmu01/ipfs-metadata:latest"
-  cpu       = 256
-  memory    = 512
-  essential = true
-  portMappings = [
-    {
-      containerPort = 8080
-      hostPort      = 8080
-      protocol      = "tcp"
-    }
-  ]
-  environment = []
-}]
-requires_compatibilities = ["FARGATE"]
-network_mode             = "awsvpc"
-service_name             = "ipfs-service"
-desired_count            = 2
-launch_type              = "FARGATE"
-container_name           = "ipfs-app"
-container_port           = 8080
+cluster_name                = "ipfs-cluster"
+github_username             = "adedokunmu01"
+github_token                = "ghp_*******"
+log_group_name              = "/ecs/ipfs_service"
+log_stream_name             = "ipfs-log-stream"
+task_family                 = "ipfs-task"
+container_definition_image  = "ghcr.io/adedokunmu01/ipfs-metadata:latest"
+container_definition_cpu    = 512
+container_definition_memory = 1024
+logstream_prefix            = "ipfs"
+requires_compatibilities    = ["FARGATE"]
+network_mode                = "awsvpc"
+ipfs_task_cpu               = "512"
+ipfs_task_memory            = "1024"
+service_name                = "ipfs-service"
+desired_count               = 1
+launch_type                 = "FARGATE"
+container_name              = "ipfs-app"
+container_port              = 8080
 
 # RDS Configuration
 db_identifier          = "ipfs-dbinstance"
@@ -64,7 +73,7 @@ engine_version         = "16.3"
 instance_class         = "db.t3.micro"
 allocated_storage      = 20
 username               = "test"
-password               = ""
+password               = "*******"
 db_name                = "testdb"
 parameter_group_name   = "ipfs-custom-parameter-group"
 parameter_group_family = "postgres16"

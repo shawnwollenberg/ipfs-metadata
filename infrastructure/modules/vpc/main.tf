@@ -6,10 +6,11 @@ resource "aws_vpc" "ipfs_vpc" {
 }
 
 resource "aws_subnet" "ipfs_subnet" {
-  count             = var.subnet_count
-  vpc_id            = aws_vpc.ipfs_vpc.id
-  cidr_block        = cidrsubnet(var.cidr_block, 8, count.index)
-  availability_zone = element(data.aws_availability_zones.available.names, count.index)
+  count                   = var.subnet_count
+  vpc_id                  = aws_vpc.ipfs_vpc.id
+  cidr_block              = cidrsubnet(var.cidr_block, 8, count.index)
+  availability_zone       = element(data.aws_availability_zones.available.names, count.index)
+  map_public_ip_on_launch = true
   tags = {
     Name = "${var.name}-subnet-${count.index}"
   }
