@@ -60,7 +60,7 @@ variable "ipfs_secret_name" {}
 
 variable "github_username" {}
 
-variable "github_token" {}
+variable "IMAGE_TOKEN" {}
 
 variable "log_group_name" {}
 
@@ -107,7 +107,7 @@ variable "allocated_storage" {}
 
 variable "username" {}
 
-variable "password" {}
+variable "DB_PASSWORD" {}
 
 variable "db_name" {}
 
