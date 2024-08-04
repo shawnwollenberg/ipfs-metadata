@@ -31,6 +31,7 @@ jobs:
       with:
         context: .
         file: ./Dockerfile
+        platforms: linux/amd64,linux/arm64,linux/x86_64
         push: true
         tags: ghcr.io/adedokunmu01/ipfs-metadata:latest
 
