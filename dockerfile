@@ -1,32 +1,30 @@
-# Start with a base image that contains Go
-FROM golang:1.21 AS builder
+# Stage 1: Build the Go application
+FROM golang:1.21-alpine AS builder
 
-# Set the Current Working Directory inside the container
+# Set the current working directory inside the container
 WORKDIR /app
 
-# Copy the Go Modules manifests
+# Copy go mod and sum files
 COPY go.mod go.sum ./
 
-# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+# Download all dependencies
 RUN go mod download
 
-# Copy the source code into the container
+# Copy the source code
 COPY . .
 
 # Build the Go app
-RUN go build -o main .
+RUN go build -o ipfs-server
 
-# Start a new stage from scratch
-FROM debian:bullseye-slim
 
-# Set the Current Working Directory inside the container
-WORKDIR /root/
+# Copy the data directory
+COPY data /root/data
 
-# Copy the Pre-built binary file from the previous stage
-COPY --from=builder /app/main .
+# Install necessary packages
+RUN apk --no-cache add ca-certificates
 
 # Expose port 8080 to the outside world
 EXPOSE 8080
 
 # Command to run the executable
-CMD ["./main"]
+CMD ["./ipfs-server"]
