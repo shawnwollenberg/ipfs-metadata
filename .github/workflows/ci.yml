@@ -1,17 +1,24 @@
-name: CI/CD Pipeline
+name: CI
 
 on:
   pull_request:
+    paths:
+      - '**/*.go'
+      - '**/dockerfile'
     branches:
       - main
   push:
     branches:
       - main
 
+
+concurrency:
+    group: ci-${{ github.head_ref || 'main' }}
+    cancel-in-progress: true
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -37,49 +44,5 @@ jobs:
         platforms: linux/amd64,linux/arm64,linux/x86_64
         push: true
         tags: ghcr.io/adedokunmu01/ipfs-metadata:latest
-  
-  terraform-deploy:
-    runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: 1.4.0
-    
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
-
-    - name: Terraform Init
-      run: make init
-
-    - name: Terraform Plan
-      env:
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        IMAGE_TOKEN: ${{ secrets.IMAGE_TOKEN }}
-      run: terraform plan -var "DB_PASSWORD=${DB_PASSWORD}" -var "IMAGE_TOKEN=${IMAGE_TOKEN}" -var-file="terraform.tfvars"
-      working-directory: ./infrastructure
-
-    - name: Terraform Apply
-      env:
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        IMAGE_TOKEN: ${{ secrets.IMAGE_TOKEN }}
-      if: github.ref == 'refs/heads/main'
-      run: terraform apply -var "DB_PASSWORD=${DB_PASSWORD}" -var "IMAGE_TOKEN=${IMAGE_TOKEN}" -var-file="terraform.tfvars" -auto-approve
-      working-directory: ./infrastructure
-
-    - name: Terraform Destroy
-      env:
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        IMAGE_TOKEN: ${{ secrets.IMAGE_TOKEN }}
-      if: github.event_name == 'pull_request'
-      run: terraform destroy -var "DB_PASSWORD=${DB_PASSWORD}" -var "IMAGE_TOKEN=${IMAGE_TOKEN}" -var-file="terraform.tfvars" -auto-approve
-      working-directory: ./infrastructure
 
