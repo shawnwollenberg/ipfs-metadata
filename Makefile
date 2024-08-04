@@ -18,18 +18,18 @@ plan: fmt
 	cd infrastructure && \
 		terraform plan \
 		&& export DB_PASSWORD=$$DB_PASSWORD \
-		&& export DB_USERNAME=$$DB_USERNAME
+		&& export IMAGE_TOKEN=$$IMAGE_TOKEN
 
 apply: fmt
 	@echo "Changing directory to infrastructure..."
 	cd infrastructure && \
 		terraform apply -var-file="terraform.tfvars" -auto-approve \
 		&& export DB_PASSWORD=$$DB_PASSWORD \
-		&& export DB_USERNAME=$$DB_USERNAME
+		&& export IMAGE_TOKEN=$$IMAGE_TOKEN
 
 destroy: fmt
 	@echo "Changing directory to infrastructure..."
 	cd infrastructure && \
 		terraform destroy -var-file="terraform.tfvars" -auto-approve \
 		&& export DB_PASSWORD=$$DB_PASSWORD \
-		&& export DB_USERNAME=$$DB_USERNAME
+		&& export IMAGE_TOKEN=$$IMAGE_TOKEN
