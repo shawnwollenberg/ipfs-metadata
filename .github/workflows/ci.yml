@@ -58,7 +58,9 @@ jobs:
       run: make init
     
     - name: check where terraform.tfvars is stored
-      run: ls -la
+      run: |
+        ls -la
+        cd infrastructure
 
     - name: Terraform Plan
       env:
