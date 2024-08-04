@@ -16,14 +16,20 @@ init: fmt
 plan: fmt
 	@echo "Changing directory to infrastructure..."
 	cd infrastructure && \
-		terraform plan
+		terraform plan \
+		&& export DB_PASSWORD=$$DB_PASSWORD \
+		&& export DB_USERNAME=$$DB_USERNAME
 
 apply: fmt
 	@echo "Changing directory to infrastructure..."
 	cd infrastructure && \
-		terraform apply -var-file="terraform.tfvars" -auto-approve
+		terraform apply -var-file="terraform.tfvars" -auto-approve \
+		&& export DB_PASSWORD=$$DB_PASSWORD \
+		&& export DB_USERNAME=$$DB_USERNAME
 
 destroy: fmt
 	@echo "Changing directory to infrastructure..."
 	cd infrastructure && \
-		terraform destroy -var-file="terraform.tfvars" -auto-approve
+		terraform destroy -var-file="terraform.tfvars" -auto-approve \
+		&& export DB_PASSWORD=$$DB_PASSWORD \
+		&& export DB_USERNAME=$$DB_USERNAME

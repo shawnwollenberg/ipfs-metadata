@@ -61,11 +61,11 @@ jobs:
       env:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         DB_USERNAME: ${{ secrets.IMAGE_TOKEN }}
-      run: make plan -var="password=${DB_PASSWORD}" -var="github_token=${IMAGE_TOKEN}"
+      run: make plan
 
     - name: Terraform Apply
       env:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         DB_USERNAME: ${{ secrets.IMAGE_TOKEN }}
-      run: make apply -var="DB_PASSWORD=${DB_PASSWORD}" -var="DB_USERNAME=${IMAGE_TOKEN}"
+      run: make apply
 
