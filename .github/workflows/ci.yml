@@ -73,6 +73,6 @@ jobs:
       env:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         IMAGE_TOKEN: ${{ secrets.IMAGE_TOKEN }}
-      run: terraform apply var "DB_PASSWORD=${DB_PASSWORD}" -var "IMAGE_TOKEN=${IMAGE_TOKEN}" -var-file="terraform.tfvars" -auto-approve
+      run: terraform apply -var "DB_PASSWORD=${DB_PASSWORD}" -var "IMAGE_TOKEN=${IMAGE_TOKEN}" -var-file="terraform.tfvars" -auto-approve
       working-directory: ./infrastructure
 
