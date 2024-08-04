@@ -8,28 +8,27 @@ fmt:
 	cd infrastructure && \
 		terraform fmt -recursive || (echo "Terraform files need formatting." && exit 1)
 
+validate: fmt
+	@echo "Changing directory to infrastructure..."
+	cd infrastructure && \
+		terraform validate
+
 init: fmt
 	@echo "Changing directory to infrastructure..."
 	cd infrastructure && \
 		terraform init -reconfigure 
 
-plan: fmt
+plan: validate
 	@echo "Changing directory to infrastructure..."
 	cd infrastructure && \
-		terraform plan \
-		&& export DB_PASSWORD=$$DB_PASSWORD \
-		&& export IMAGE_TOKEN=$$IMAGE_TOKEN
+		terraform plan
 
-apply: fmt
+apply: validate
 	@echo "Changing directory to infrastructure..."
 	cd infrastructure && \
-		terraform apply -var-file="terraform.tfvars" -auto-approve \
-		&& export DB_PASSWORD=$$DB_PASSWORD \
-		&& export IMAGE_TOKEN=$$IMAGE_TOKEN
+		terraform apply -var-file="terraform.tfvars" -auto-approve 
 
-destroy: fmt
+destroy: validate
 	@echo "Changing directory to infrastructure..."
 	cd infrastructure && \
-		terraform destroy -var-file="terraform.tfvars" -auto-approve \
-		&& export DB_PASSWORD=$$DB_PASSWORD \
-		&& export IMAGE_TOKEN=$$IMAGE_TOKEN
+		terraform destroy -var-file="terraform.tfvars" -auto-approve
