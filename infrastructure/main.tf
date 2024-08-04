@@ -94,4 +94,3 @@ module "rds" {
   parameter_group_family = var.parameter_group_family
   tags_name              = var.tags_name
 }
-
