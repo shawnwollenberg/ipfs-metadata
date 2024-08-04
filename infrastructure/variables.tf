@@ -56,13 +56,33 @@ variable "ecs_role_policy_arn" {}
 # ECS Configuration
 variable "cluster_name" {}
 
+variable "ipfs_secret_name" {}
+
+variable "github_username" {}
+
+variable "github_token" {}
+
+variable "log_group_name" {}
+
+variable "log_stream_name" {}
+
 variable "task_family" {}
 
-variable "container_definitions" {}
+variable "container_definition_image" {}
+
+variable "container_definition_cpu" {}
+
+variable "container_definition_memory" {}
+
+variable "logstream_prefix" {}
 
 variable "requires_compatibilities" {}
 
 variable "network_mode" {}
+
+variable "ipfs_task_cpu" {}
+
+variable "ipfs_task_memory" {}
 
 variable "service_name" {}
 

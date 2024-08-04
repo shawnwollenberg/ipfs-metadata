@@ -34,4 +34,38 @@ jobs:
         platforms: linux/amd64,linux/arm64,linux/x86_64
         push: true
         tags: ghcr.io/adedokunmu01/ipfs-metadata:latest
+  
+  terraform-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.4.0
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Terraform Init
+      run: make init
+
+    - name: Terraform Plan
+      env:
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_USERNAME: ${{ secrets.IMAGE_TOKEN }}
+      run: make plan -var="password=${DB_PASSWORD}" -var="github_token=${IMAGE_TOKEN}"
+
+    - name: Terraform Apply
+      env:
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_USERNAME: ${{ secrets.IMAGE_TOKEN }}
+      run: make apply -var="DB_PASSWORD=${DB_PASSWORD}" -var="DB_USERNAME=${IMAGE_TOKEN}"
 

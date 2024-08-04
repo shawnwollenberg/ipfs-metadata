@@ -1,12 +1,12 @@
-output "vpc_id" {
+output "ipfs_vpc_id" {
   value = aws_vpc.ipfs_vpc.id
 }
 
-output "subnet_ids" {
+output "ipfs_subnet_ids" {
   value = aws_subnet.ipfs_subnet[*].id
 }
 
-output "subnet_group_name" {
+output "ipfs_subnet_group_name" {
   value = aws_db_subnet_group.ipfs_db_subnet_group.name
 
 }
