@@ -13,7 +13,7 @@ validate: fmt
 	cd infrastructure && \
 		terraform validate
 
-init: validate
+init: fmt
 	@echo "Changing directory to infrastructure..."
 	cd infrastructure && \
 		terraform init -reconfigure 
