@@ -45,7 +45,7 @@ module "ecs" {
   cluster_name                   = var.cluster_name
   ipfs_secret_name               = var.ipfs_secret_name
   github_username                = var.github_username
-  github_token                   = var.github_token
+  github_token                   = var.IMAGE_TOKEN
   log_group_name                 = var.log_group_name
   log_stream_name                = var.log_stream_name
   task_family                    = var.task_family
@@ -86,7 +86,7 @@ module "rds" {
   instance_class         = var.instance_class
   allocated_storage      = var.allocated_storage
   username               = var.username
-  password               = var.password
+  password               = var.DB_PASSWORD
   db_name                = var.db_name
   ipfs_rds_sg_id         = [module.vpc.ipfs_rds_sg_id]
   db_subnet_group_name   = module.vpc.ipfs_subnet_group_name
