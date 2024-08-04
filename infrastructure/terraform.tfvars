@@ -47,8 +47,8 @@ ecs_role_policy_arn    = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExec
 
 # ECS Configuration
 cluster_name                = "ipfs-cluster"
+ipfs_secret_name            = "ipfs-github"
 github_username             = "adedokunmu01"
-github_token                = "ghp_*******"
 log_group_name              = "/ecs/ipfs_service"
 log_stream_name             = "ipfs-log-stream"
 task_family                 = "ipfs-task"
@@ -73,7 +73,6 @@ engine_version         = "16.3"
 instance_class         = "db.t3.micro"
 allocated_storage      = 20
 username               = "test"
-password               = "*******"
 db_name                = "testdb"
 parameter_group_name   = "ipfs-custom-parameter-group"
 parameter_group_family = "postgres16"

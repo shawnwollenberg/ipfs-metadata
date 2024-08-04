@@ -7,7 +7,7 @@ resource "aws_kms_key" "ipfs_ecs_secret_key" {
 }
 
 resource "aws_secretsmanager_secret" "ipfs_github_credentials" {
-  name       = "ipfs_github_ecr_credentials"
+  name       = var.ipfs_secret_name
   kms_key_id = aws_kms_key.ipfs_ecs_secret_key.id
 }
 

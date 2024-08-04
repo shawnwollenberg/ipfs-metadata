@@ -1,0 +1,3 @@
+projects:
+- name: devlopment
+  dir: infrastructure

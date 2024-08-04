@@ -56,6 +56,8 @@ variable "ecs_role_policy_arn" {}
 # ECS Configuration
 variable "cluster_name" {}
 
+variable "ipfs_secret_name" {}
+
 variable "github_username" {}
 
 variable "github_token" {}

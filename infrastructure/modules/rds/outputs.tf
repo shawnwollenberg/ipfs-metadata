@@ -7,12 +7,13 @@ output "ipfs_db_instance_address" {
 }
 
 output "ipfs_db_instance_username" {
-  value = aws_db_instance.ipfs_db.username
+  value     = aws_db_instance.ipfs_db.username
+  sensitive = true
 }
 
 output "ipfs_db_instance_password" {
-  value = aws_db_instance.ipfs_db.password
-  # sensitive = true
+  value     = aws_db_instance.ipfs_db.password
+  sensitive = true
 }
 
 output "ipfs_db_instance_db_name" {

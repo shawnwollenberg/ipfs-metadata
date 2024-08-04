@@ -43,6 +43,7 @@ module "iam" {
 module "ecs" {
   source                         = "./modules/ecs"
   cluster_name                   = var.cluster_name
+  ipfs_secret_name               = var.ipfs_secret_name
   github_username                = var.github_username
   github_token                   = var.github_token
   log_group_name                 = var.log_group_name
