@@ -1,1 +1,6 @@
 .env
+ipfs_fetcher
+# Terraform
+.terraform/
+.terraform.*
+terraform.tfstate

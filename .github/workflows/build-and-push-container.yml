@@ -1,0 +1,36 @@
+name: build-and-push-container
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: env to be used
+        required: true
+        type: choice
+        options:
+          - dev
+        default: dev
+
+jobs:
+  build-and-push:
+    name: build-and-push-container
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: config-aws-credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+      - name: login-to-ecr
+        id: login-to-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: and push docker image to ECR
+        env:
+          REGISTRY: ${{ steps.login-to-ecr.outputs.registry }}
+          REPOSITORY:  ipfs-metadata-${{ inputs.environment }}
+          TAG: ipfs-metadata-${{ github.run_number }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$TAG .
+          docker push $REGISTRY/$REPOSITORY:$TAG

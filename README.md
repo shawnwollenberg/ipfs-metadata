@@ -21,7 +21,6 @@ This application scrapes NFT metadata from IPFS using a CSV list of IPFS CIDs an
 
 ```
 git clone https://github.com/shawnwollenberg/ipfs-metadata.git
-cd nft_scraper
 ```
 
 ### Step 2: Set Up PostgreSQL
